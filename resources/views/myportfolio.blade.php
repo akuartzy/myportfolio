@@ -29,16 +29,71 @@ h2{font-size:clamp(2rem,6vw,3.4rem);line-height:1.05;letter-spacing:-.02em}
 .info .tag{color:var(--teal);font-weight:500;margin-bottom:6px}
 .info h3{font-size:2rem;line-height:1.1;margin:10px 0}
 .info p{color:var(--mute);max-width:36ch}
-.stage{perspective:1100px;display:grid;place-items:center;min-height:440px}
+.stage{perspective:1100px;display:grid;place-items:center;min-height:440px;cursor:grab;touch-action:pan-y;user-select:none}
+.stage:active{cursor:grabbing}
 .phone{width:230px;height:440px;border-radius:36px;padding:10px;background:linear-gradient(145deg,#2a1b55,#0f0828);box-shadow:0 0 0 2px #3b2a73,0 40px 80px -20px rgba(139,92,246,.55);transform-style:preserve-3d;transition:transform .15s ease-out}
 .screen{height:100%;border-radius:28px;display:flex;flex-direction:column;justify-content:flex-end;padding:0;position:relative;overflow:hidden;transform:translateZ(30px);background:#0a0618}
-.screen img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:28px;z-index:1}
+.screen img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:28px;z-index:1;pointer-events:none}
 .screen .overlay{position:relative;z-index:2;padding:20px;background:linear-gradient(to top,rgba(10,6,24,.92) 0%,transparent 70%);display:flex;flex-direction:column;justify-content:flex-end;height:100%}
 .screen b{font-size:1.35rem;line-height:1.15}
 .screen span{color:var(--ink);opacity:.85;font-size:.85rem;margin-top:6px}
 .dots{display:flex;gap:10px;justify-content:center;margin-top:28px;grid-column:1/-1}
 .dots button{width:10px;height:10px;border-radius:50%;border:0;background:#3b2a73;cursor:pointer;transition:all .3s}
 .dots button[aria-current=true]{width:30px;border-radius:6px;background:var(--lav)}
+
+/* ===== TOMBOL SLIDE YANG LEBIH MENARIK ===== */
+.nav-arrows{
+  display:flex;
+  gap:16px;
+  justify-content:center;
+  margin-top:22px;
+  grid-column:1/-1;
+}
+.nav-arrows button{
+  width:52px;
+  height:52px;
+  border-radius:50%;
+  border:none;
+  background:linear-gradient(145deg, #2a1b55, #1a1038);
+  color:var(--ink);
+  cursor:pointer;
+  display:grid;
+  place-items:center;
+  position:relative;
+  overflow:hidden;
+  transition:all .3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 15px rgba(139, 92, 246, 0.25);
+}
+.nav-arrows button::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:linear-gradient(135deg, var(--vio), var(--teal));
+  opacity:0;
+  transition:opacity .3s ease;
+  border-radius:50%;
+}
+.nav-arrows button:hover{
+  transform:translateY(-4px) scale(1.08);
+  box-shadow: 0 8px 25px rgba(139, 92, 246, 0.45);
+}
+.nav-arrows button:hover::before{
+  opacity:1;
+}
+.nav-arrows button:active{
+  transform:translateY(-1px) scale(0.97);
+}
+.nav-arrows button svg{
+  width:22px;
+  height:22px;
+  position:relative;
+  z-index:1;
+  transition:transform .3s ease;
+}
+.nav-arrows button:hover svg{
+  transform:scale(1.15);
+}
+
 .tabs{display:flex;gap:8px;background:var(--bg2);padding:6px;border-radius:999px;width:fit-content;margin:28px 0}
 .tabs button{border:0;background:none;color:var(--mute);font:inherit;font-weight:500;padding:10px 22px;border-radius:999px;cursor:pointer}
 .tabs button[aria-selected=true]{background:var(--vio);color:#fff}
@@ -158,7 +213,21 @@ footer{position:relative;z-index:1;text-align:center;color:var(--mute);padding:3
         </div>
       </div>
     </div>
+
+    <!-- Dots + Tombol panah -->
     <div class="dots" id="dots" role="group" aria-label="Pilih proyek"></div>
+    <div class="nav-arrows">
+      <button id="prevBtn" aria-label="Proyek sebelumnya">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M15 18l-6-6 6-6"/>
+        </svg>
+      </button>
+      <button id="nextBtn" aria-label="Proyek selanjutnya">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 18l6-6-6-6"/>
+        </svg>
+      </button>
+    </div>
   </div>
 </section>
 
@@ -216,6 +285,22 @@ const projects = [
     desc: "Aplikasi cuaca real-time yang menampilkan suhu, kondisi cuaca, dan lokasi. Menggunakan Weather API agar data selalu up-to-date. Desain minimalis dan ramah mobile.",
     tech: "HTML, CSS, JavaScript + Weather API",
     img: "https://images.unsplash.com/photo-1504608524841-42fe6f032b4b?w=400&h=800&fit=crop"
+  },
+  {
+    no: "04",
+    tag: "Web",
+    title: "Quiz App",
+    desc: "Aplikasi kuis interaktif dengan skor real-time. Pengguna bisa menjawab pertanyaan pilihan ganda dan langsung melihat hasilnya. Cocok untuk belajar sambil bermain.",
+    tech: "HTML, CSS & JavaScript",
+    img: "https://images.unsplash.com/photo-1606326608606-aa0b62935f2b?w=400&h=800&fit=crop"
+  },
+  {
+    no: "05",
+    tag: "Web",
+    title: "Music Player",
+    desc: "Pemutar musik sederhana dengan fitur play, pause, next, previous, dan progress bar. Desain modern dengan fokus pada pengalaman pengguna yang nyaman.",
+    tech: "HTML, CSS & JavaScript",
+    img: "https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=400&h=800&fit=crop"
   }
 ];
 
@@ -257,8 +342,13 @@ itemsEl.addEventListener('pointerout', e => {
   const c = e.target.closest('.item'); if (c) c.style.transform = '';
 });
 
-const $ = id => document.getElementById(id), dots = $('dots');
+/* ====== WORKS SLIDER ====== */
+const $ = id => document.getElementById(id);
+const dots = $('dots');
+const stage = $('stage');
+const phone = $('phone');
 let cur = 0;
+
 projects.forEach((p, i) => {
   const b = document.createElement('button');
   b.setAttribute('aria-label', 'Proyek ' + p.no);
@@ -267,8 +357,8 @@ projects.forEach((p, i) => {
 });
 
 function show(i) {
-  cur = i;
-  const p = projects[i];
+  cur = (i + projects.length) % projects.length;
+  const p = projects[cur];
   $('pNo').textContent = p.no;
   $('pTag').textContent = p.tag;
   $('pTitle').textContent = p.title;
@@ -280,19 +370,51 @@ function show(i) {
   $('sSub').textContent = p.tag;
   $('sImg').src = p.img;
   $('sImg').alt = p.title;
-  [...dots.children].forEach((d, j) => d.setAttribute('aria-current', j === i));
+  [...dots.children].forEach((d, j) => d.setAttribute('aria-current', j === cur));
 }
-show(cur);
+show(0);
 
-const phone = $('phone'), stage = $('stage');
+/* Tombol panah */
+$('prevBtn').onclick = () => show(cur - 1);
+$('nextBtn').onclick = () => show(cur + 1);
+
+/* ====== SWIPE / DRAG ====== */
+let startX = 0;
+let isDragging = false;
+
+stage.addEventListener('pointerdown', e => {
+  isDragging = true;
+  startX = e.clientX;
+  stage.setPointerCapture(e.pointerId);
+});
+
+stage.addEventListener('pointerup', e => {
+  if (!isDragging) return;
+  isDragging = false;
+  const diff = e.clientX - startX;
+
+  if (Math.abs(diff) > 50) {
+    if (diff > 0) show(cur - 1);
+    else show(cur + 1);
+  }
+});
+
+stage.addEventListener('pointercancel', () => isDragging = false);
+
+/* 3D tilt tetap jalan */
 stage.addEventListener('pointermove', e => {
+  if (isDragging) return;
   const r = stage.getBoundingClientRect();
-  const x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5;
+  const x = (e.clientX - r.left) / r.width - .5;
+  const y = (e.clientY - r.top) / r.height - .5;
   phone.style.transform = `rotateY(${x*40}deg) rotateX(${-y*30}deg)`;
 });
-stage.addEventListener('pointerleave', () => phone.style.transform = 'rotateY(-18deg) rotateX(6deg)');
+stage.addEventListener('pointerleave', () => {
+  phone.style.transform = 'rotateY(-18deg) rotateX(6deg)';
+});
 phone.style.transform = 'rotateY(-18deg) rotateX(6deg)';
 
+/* ====== THREE.JS BACKGROUND ====== */
 (function () {
   const cv = $('bg');
   if (!window.THREE) return;
